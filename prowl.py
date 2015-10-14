@@ -18,8 +18,8 @@ while True:
 	print ("   M A I N - M E N U")
 	print (30 * '-')
 	print ("1. Grab Linkedin Data")
-	print ("2. Username Enumeration")
-	print ("3. Email Enumeration")
+	print ("2. Email Enumeration")
+	print ("3. Username Enumeration")
 	print (30 * '-')
 	 
 	## Get input ###
@@ -141,22 +141,22 @@ while True:
 		        print "firstname-firstletter+lastname@" + emailhost
 		        for i in EMAILS:
 		        	prefix = i.split()
-		        	print prefix[1]+ "." + prefix[0]+emailhost
+		        	print prefix[0][0]+ "." + prefix[1]+emailhost
 		elif choice == "6":
 		        print "lastname+.+firstname-firstletter@" + emailhost
 		        for i in EMAILS:
 		        	prefix = i.split()
-		        	print prefix[1]+ "." + prefix[0]+emailhost
+		        	print prefix[1]+ "." + prefix[0][0]+emailhost
 		elif choice == "7":
 		        print "lastname-firstletter+firstname@" + emailhost
 		        for i in EMAILS:
 		        	prefix = i.split()
-		        	print prefix[1]+ "." + prefix[0]+emailhost
+		        	print prefix[1][0]+ "." + prefix[0]+emailhost
 		elif choice == "8":
-		        print "firstname+.+lastname-lastletter@" + emailhost
+		        print "firstname+.+lastname-firstletter@" + emailhost
 		        for i in EMAILS:
 		        	prefix = i.split()
-		        	print prefix[1]+ "." + prefix[0]+emailhost
+		        	print prefix[0]+ "." + prefix[1][0]+emailhost
 
 		else:    ## default ##
 		        print ("Invalid number. Try again...")
