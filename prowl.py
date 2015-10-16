@@ -7,11 +7,12 @@ import string
 
 URLS = []
 EMAILS = []
+GOOGLE = []
 
 target = open("output.txt", 'w')
 q=0
 global fill
-
+ 
 #Menu####################
 while True:
 	print (30 * '-')
@@ -23,81 +24,192 @@ while True:
 	print (30 * '-')
 	 
 	## Get input ###
-	choice = raw_input('Enter your choice [1-3] : ')
+	choice = raw_input('')
 	 
 	### Convert string to int type ##
 	choice = int(choice)
 	 
 	### Take action as per selected menu-option ###
 	if choice == 1:
-		#Defining Search Variables
-		link = raw_input("Enter Base Linkedin Profile: ")
-		Org = raw_input("What company are you searching for?: ")
+		
+		print ("4. Basic")
+		print ("5. Deep & Thorough")
+		print (30 * '-')
+		## Get input ###
+		submenu2 = raw_input('Enter your choice [1-3] : ')
+		### Convert string to int type ##
+		submenu2 = int(submenu2)
 
-		##########################
+		### Take action as per selected menu-option ###
+		if submenu2 == 4:
+			#Defining Search Variables
+			link = raw_input("Enter Base Linkedin Profile: ")
+			Org = raw_input("What company are you searching for?: ")
+			Org2 = Org.lower()
 
-		print "---------------------------------------"
-		print "Searching for " + Org
-		print "----------------------------------------"
-
-		def greppage(link, Org, URLS):
-
-			x=1
-			
-			#Setting User Agent#######
-			header = {'User-Agent': 'Mozilla/5.0'} #Needed to prevent 403 error on Wikipedia
 			##########################
+
+			print "---------------------------------------"
+			print "Searching for " + Org
+			print "----------------------------------------"
+
+			def greppage(link, Org, URLS):
+
+				x=1
+				
+				#Setting User Agent#######
+				header = {'User-Agent': 'Mozilla/5.0'} #Needed to prevent 403 error on Wikipedia
+				##########################
+				
 				#Making HTTP req##########
-		        req = urllib2.Request(link,headers=header)
-		        page = urllib2.urlopen(req)
-		        soup = BeautifulSoup(page, "lxml")
-		        ##########################
-			name = soup.select("div.insights-browse-map > ul > li > h4 > a")
-			company = soup.select("div.insights-browse-map > ul > li > p.browse-map-title")
+			    	req = urllib2.Request(link,headers=header)
+			   	page = urllib2.urlopen(req)
+			    	soup = BeautifulSoup(page, "lxml")
+			    ##########################
+				name = soup.select("div.insights-browse-map > ul > li > h4 > a")
+				company = soup.select("div.insights-browse-map > ul > li > p.browse-map-title")
 
-			#YOU CAN READD 
-			
-			while x == 1: 
-				global PRINT
-				PRINT = []
-				list1 = []
-				list2 = []
-				list3 = []
-				global sdf
+				while x == 1: 
+					global PRINT
+					global sdf
+					PRINT = []
+					list1 = []
+					list2 = []
+					list3 = []
+
+					for i in name:
+						list1.append(i.getText())	
+						list3.append(i['href'])
+						#print i.getText()
+							
+					for c in company: 
+						list2.append(c.getText().lower() + ",")
+						#print c.getText()
+
+					for item in izip(list1, list2, list3):
+						#print item
+						if Org2 in item[1]:	
+							if item[2] not in URLS:
+								print item[0]+ "	" + item[1]+ "	" +item[2]
+								URLS.append(item[2])
+								EMAILS.append(item[0])
+								pre=(item[0]+ "	" + item[1]+ "	" +item[2])
+								sdf = filter(lambda x: x in string.printable, pre)
+								PRINT.append(sdf)
+								#print sdf
+								target.write(sdf + "\n")			
+					x+=1
+
+			greppage(link, Org, URLS)
+
+			for iturl in URLS:
+				greppage(iturl, Org, URLS)
+				# for full in PRINT:
+					# q+=1
+					# s = str(q) + ": " + full
+					# #print s
+					# target.write(s + "\n")
+					# #print URLS        
 
 
-				for i in name:
-					list1.append(i.getText())	
-					list3.append(i['href'])
-						
-				for c in company: 
-					list2.append(c.getText() + ",")
 
-				for item in izip(list1, list2, list3):
-					#print item
-					if Org in item[1]:	
-						if item[2] not in URLS:
-							#print item[0]+ "	" + item[1]+ "	" +item[2]
-							URLS.append(item[2])
-							EMAILS.append(item[0])
-							pre=(item[0]+ "	" + item[1]+ "	" +item[2])
-							sdf = filter(lambda x: x in string.printable, pre)
-							PRINT.append(sdf)			
-				x+=1
+		elif submenu2 == 5:
+				#Defining Search Variables
+				link = ""
+				Org = raw_input("What company are you searching for?: ")
+				Org2 = Org.lower()
 
-		greppage(link, Org, URLS)
+				company2 = Org2.replace(" ", "")
+				#Setting User Agent#######
+				header = {'User-Agent': 'Mozilla/5.0'} #Needed to prevent 403 error on Wikipedia
+				##########################
+							
+				#Making HTTP req##########
+				req2 = urllib2.Request("https://uk.search.yahoo.com/search?p="+company2+"%20linkedin%20/pub/")
+				page2 = urllib2.urlopen(req2)
+				soup2 = BeautifulSoup(page2, "lxml")
+				##########################
 
-		for iturl in URLS:
-			greppage(iturl, Org, URLS)
-			for full in PRINT:
-				q+=1
-				s = str(q) + ": " + full
-				print s
-				target.write(s + "\n")
-			#print URLS        
+				company2 = soup2.findAll("h3", {"class" : "title"})
+
+				for i2 in company2:
+					c2 = i2.find("a")
+					#print c2['href']
+					GOOGLE.append(c2['href'])
+
+				##########################
+
+				print "---------------------------------------"
+				print "Searching for " + Org
+				print "----------------------------------------"
+
+				def greppage(link, Org, URLS):
+
+					x=1
+					
+					#Setting User Agent#######
+					header = {'User-Agent': 'Mozilla/5.0'} #Needed to prevent 403 error on Wikipedia
+					##########################
+					
+					#Making HTTP req##########
+				    	req = urllib2.Request(link,headers=header)
+				   	page = urllib2.urlopen(req)
+				    	soup = BeautifulSoup(page, "lxml")
+				    ##########################
+					name = soup.select("div.insights-browse-map > ul > li > h4 > a")
+					company = soup.select("div.insights-browse-map > ul > li > p.browse-map-title")
+
+					while x == 1: 
+						global PRINT
+						global sdf
+						PRINT = []
+						list1 = []
+						list2 = []
+						list3 = []
+
+						for i in name:
+							list1.append(i.getText())	
+							list3.append(i['href'])
+							#print i.getText()
+								
+						for c in company: 
+							list2.append(c.getText().lower() + ",")
+							#print c.getText()
+
+						for item in izip(list1, list2, list3):
+							#print item
+							if Org2 in item[1]:	
+								if item[2] not in URLS:
+									print item[0]+ "	" + item[1]+ "	" +item[2]
+									URLS.append(item[2])
+									EMAILS.append(item[0])
+									pre=(item[0]+ "	" + item[1]+ "	" +item[2])
+									sdf = filter(lambda x: x in string.printable, pre)
+									PRINT.append(sdf)
+									#print sdf
+									target.write(sdf + "\n")			
+						x+=1
+
+				for link in GOOGLE:
+					#print link
+					if "linkedin.com/pub/" or "linkedin.com/in/" in link:
+						greppage(link, Org, URLS)
+						for iturl in URLS:
+							greppage(iturl, Org, URLS)
+							# for full in PRINT:
+								# q+=1
+								# s = str(q) + ": " + full
+								# #print s
+								# target.write(s + "\n")
+								# #print URLS  
+					else:
+						print "non-company link"
+
+				GOOGLE = []
+
 
 	elif choice == 2:
-		emailhost = raw_input("What is the organisations hostname?: ")
+		emailhost = "@" + raw_input("What is the organisations hostname?: ")
 
 		print (30 * '-')
 		print ("1: firstname + lastname@" + emailhost)
