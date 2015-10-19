@@ -49,13 +49,15 @@ def deep_and_thorough( Org ):
   print "----------------------------------------"
 
   for link in GOOGLE:
-    #print link
-    if "linkedin.com/pub/" or "linkedin.com/in/" in link:
-      greppage(link, Org)
-      for iturl in URLS:
-        greppage(iturl, Org)
-    else:
-      print "non-company link"
+    try:
+      #print link
+      if "linkedin.com/pub/" or "linkedin.com/in/" in link:
+        greppage(link, Org)
+        for iturl in URLS:
+          greppage(iturl, Org)
+      else:
+        print "non-company link"
+    except: "Yahoo dun goofed"    
 
   GOOGLE = []
 
@@ -72,7 +74,10 @@ def basic_search( Org, link ):
   greppage(link, Org)
 
   for iturl in URLS:
-    greppage(iturl, Org)
+    try:
+      greppage(iturl, Org)
+    except:
+      print "You dun goofed"
 
 def greppage(link, Org ):
   global GOOGLE, EMAILS, URLS, target, args
@@ -109,7 +114,7 @@ def greppage(link, Org ):
       #print item
       if Org.lower() in item[1]:	
         if item[2] not in URLS:
-          print item[0]+chr(9)+ item[1]+ chr(9) +item[2]
+          ##print item[0]+chr(9)+ item[1]+ chr(9) +item[2]
           URLS.append(item[2])
           EMAILS.append(item[0])
           pre=(item[0]+ chr(9) + item[1]+ chr(9) +item[2])
@@ -123,7 +128,7 @@ def greppage(link, Org ):
             li = ln[1]
             email = args.emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
             email2 = filter(lambda x: x in string.printable, email)
-            print email2
+            ##print email2
             f = open( outfile + '.emails', 'a' )
             f.write( email2 + "\n" )
             
@@ -131,16 +136,19 @@ def greppage(link, Org ):
 
 def mangle_emails(names, pattern, orgname):
   global outfile
-  for name in names:
-    fn = string.split(name)[0]
-    fi = fn[0]
-    ln = ''.join(string.split(name)[1:])
-    li = ln[1]
-    email = pattern.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
-    email2 = filter(lambda x: x in string.printable, email)
-    print email
-    f = open( outfile + '.emails', 'a' )
-    f.write( email2 + "\n" )
+  try:
+    for name in names:
+      fn = string.split(name)[0]
+      fi = fn[0]
+      ln = ''.join(string.split(name)[1:])
+      li = ln[1]
+      email = pattern.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
+      email2 = filter(lambda x: x in string.printable, email)
+      ##print email
+      f = open( outfile + '.emails', 'a' )
+      f.write( email2 + "\n" )
+  except:
+    print "oops you've got an error"
 
 if args.company:
   if args.outfile:
