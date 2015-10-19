@@ -122,9 +122,10 @@ def greppage(link, Org ):
             ln = ''.join(string.split(item[0])[1:])
             li = ln[1]
             email = args.emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
-            print email
+            email2 = filter(lambda x: x in string.printable, email)
+            print email2
             f = open( outfile + '.emails', 'a' )
-            f.write( email + "\n" )
+            f.write( email2 + "\n" )
             
     x+=1
 
@@ -136,9 +137,10 @@ def mangle_emails(names, pattern, orgname):
     ln = ''.join(string.split(name)[1:])
     li = ln[1]
     email = pattern.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
+    email2 = filter(lambda x: x in string.printable, email)
     print email
     f = open( outfile + '.emails', 'a' )
-    f.write( email + "\n" )
+    f.write( email2 + "\n" )
 
 if args.company:
   if args.outfile:
