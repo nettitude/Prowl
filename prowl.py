@@ -5,6 +5,7 @@ import sys
 from itertools import izip
 import string
 import argparse
+import mysql.connector
 #########################
 
 URLS = []
@@ -119,6 +120,7 @@ def greppage(link, Org ):
           EMAILS.append(item[0])
           pre=(item[0]+ chr(9) + item[1]+ chr(9) +item[2])
           data = filter(lambda x: x in string.printable, pre)
+          print data
           PRINT.append(data)
           target.write(data + "\n")			
           if args.emailformat:
@@ -128,9 +130,18 @@ def greppage(link, Org ):
             li = ln[1]
             email = args.emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
             email2 = filter(lambda x: x in string.printable, email)
-            ##print email2
+            print email2
             f = open( outfile + '.emails', 'a' )
             f.write( email2 + "\n" )
+            
+            cnx = mysql.connector.connect(user='scott', database='employees')
+            cursor = cnx.cursor()
+            add = ("INSERT INTO Santander "
+                           "(Email) "
+                           "VALUES (%(email2)s)")
+            cursor.execute(add)
+            cnx.close()
+            #print email2
             
     x+=1
 
@@ -144,9 +155,18 @@ def mangle_emails(names, pattern, orgname):
       li = ln[1]
       email = pattern.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
       email2 = filter(lambda x: x in string.printable, email)
-      ##print email
       f = open( outfile + '.emails', 'a' )
       f.write( email2 + "\n" )
+      cnx = mysql.connector.connect(user='scott', database='employees')
+      cursor = cnx.cursor()
+      add = ("INSERT INTO Santander "
+                           "(Email) "
+                           "VALUES (%(email2)s)")
+      cursor.execute(add)
+      cnx.close()
+      #print email2
+
+
   except:
     print "oops you've got an error"
 
