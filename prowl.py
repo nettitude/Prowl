@@ -5,7 +5,7 @@ import sys
 from itertools import izip
 import string
 import argparse
-import mysql.connector
+
 #########################
 
 URLS = []
@@ -134,13 +134,7 @@ def greppage(link, Org ):
             f = open( outfile + '.emails', 'a' )
             f.write( email2 + "\n" )
             
-            cnx = mysql.connector.connect(user='scott', database='employees')
-            cursor = cnx.cursor()
-            add = ("INSERT INTO Santander "
-                           "(Email) "
-                           "VALUES (%(email2)s)")
-            cursor.execute(add)
-            cnx.close()
+            
             #print email2
             
     x+=1
@@ -157,14 +151,7 @@ def mangle_emails(names, pattern, orgname):
       email2 = filter(lambda x: x in string.printable, email)
       f = open( outfile + '.emails', 'a' )
       f.write( email2 + "\n" )
-      cnx = mysql.connector.connect(user='scott', database='employees')
-      cursor = cnx.cursor()
-      add = ("INSERT INTO Santander "
-                           "(Email) "
-                           "VALUES (%(email2)s)")
-      cursor.execute(add)
-      cnx.close()
-      #print email2
+      
 
 
   except:
