@@ -18,12 +18,15 @@ parser.add_argument("-u", "--url", help="URL of a public profile to start a basi
 parser.add_argument("-c", "--company", help="Company to search for")
 parser.add_argument("-o", "--outfile", help="Filename to write results to")
 parser.add_argument("-e", "--emailformat", help="Format of house email address style. Use: <fn>,<ln>,<fi>,<li> as placeholders for first/last name/initial. e.g <fi><ln>@company.com")
-# parser.add_argument("-h", "--help", action="store_true", help="Show help")
+parser.add_argument("-d", "--debug", action="store_true", help="Turn on debug output")
 args = parser.parse_args()
 
 def deep_and_thorough( Org ):	
   global GOOGLE, EMAILS, URLS
   Org2 = Org.lower()
+
+  if args.debug:
+    print "deep_and_thorough( "+Org+" )"
 
   company2 = Org2.replace(" ", "")
   #Setting User Agent#######
@@ -31,8 +34,12 @@ def deep_and_thorough( Org ):
   ##########################
         
   #Making HTTP req##########
+  if args.debug:
+    print "Searching Yahoo..."
   req2 = urllib2.Request("https://uk.search.yahoo.com/search?p="+company2+"%20linkedin%20/pub/")
   page2 = urllib2.urlopen(req2)
+  if args.debug:
+    print "Page\n\n" + str( page2 )
   soup2 = BeautifulSoup(page2, "lxml")
   ##########################
 
@@ -40,7 +47,8 @@ def deep_and_thorough( Org ):
 
   for i2 in company2:
     c2 = i2.find("a")
-    #print c2['href']
+    if args.debug:
+      print c2['href']
     GOOGLE.append(c2['href'])
 
   ##########################
@@ -83,6 +91,10 @@ def basic_search( Org, link ):
 def greppage(link, Org ):
   global GOOGLE, EMAILS, URLS, target, args
   x=1
+  
+  if args.debug:
+    print "greppage( '"+link+"', '"+Org+"')"
+  
   #Setting User Agent#######
   header = {'User-Agent': 'Mozilla/5.0'} #Needed to prevent 403 error on Wikipedia
   ##########################
@@ -91,9 +103,26 @@ def greppage(link, Org ):
   req = urllib2.Request(link,headers=header)
   page = urllib2.urlopen(req)
   soup = BeautifulSoup(page, "lxml")
+  # if args.debug:
+  #  print "Page: " + str( soup )
   ##########################
-  name = soup.select("div.insights-browse-map > ul > li > h4 > a")
-  company = soup.select("div.insights-browse-map > ul > li > p.browse-map-title")
+  
+  nameselect = "section.insights.profile-section li.profile-card h4 a"
+  companyselect = "section.insights.profile-section li.profile-card p.headline"
+
+  if args.debug:
+    print "Name select: "+ nameselect
+    print "Company select: " + companyselect
+  
+  # name = soup.select("div.insights-browse-map > ul > li > h4 > a")
+  name = soup.select(nameselect)
+ 
+  # company = soup.select("div.insights-browse-map > ul > li > p.browse-map-title")
+  company = soup.select(companyselect)
+
+  if args.debug:
+    print name
+    print company
 
   while x == 1: 
     global PRINT
@@ -156,6 +185,9 @@ def mangle_emails(names, pattern, orgname):
 
   except:
     print "oops you've got an error"
+
+if args.debug:
+  print args
 
 if args.company:
   if args.outfile:
