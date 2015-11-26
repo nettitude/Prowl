@@ -5,6 +5,7 @@ import sys
 from itertools import izip
 import string
 import argparse
+import random
 
 #########################
 
@@ -30,13 +31,13 @@ def deep_and_thorough( Org ):
 
   company2 = Org2.replace(" ", "")
   #Setting User Agent#######
-  header = {'User-Agent': 'Mozilla/5.0'} #Needed to prevent 403 error on Wikipedia
+  header = {'User-Agent': 'Mozilla/5.0'} 
   ##########################
         
   #Making HTTP req##########
   if args.debug:
     print "Searching Yahoo..."
-  req2 = urllib2.Request("https://uk.search.yahoo.com/search?p="+company2+"%20linkedin%20/pub/")
+  req2 = urllib2.Request("https://uk.search.yahoo.com/search?p="+company2+"%20linkedin%20")
   page2 = urllib2.urlopen(req2)
   if args.debug:
     print "Page\n\n" + str( page2 )
@@ -44,6 +45,9 @@ def deep_and_thorough( Org ):
   ##########################
 
   company2 = soup2.findAll("h3", {"class" : "title"})
+
+  if args.debug:
+    print str(len(company2)) + " results found"
 
   for i2 in company2:
     c2 = i2.find("a")
@@ -88,85 +92,80 @@ def basic_search( Org, link ):
     except:
       print "You dun goofed"
 
-def greppage(link, Org ):
+def greppage(link, org ):
   global GOOGLE, EMAILS, URLS, target, args
-  x=1
   
   if args.debug:
-    print "greppage( '"+link+"', '"+Org+"')"
-  
+    print "greppage( '"+link+"', '"+org+"')"
+ 
+  ua1 = ['Fire', 'Ice', 'Magic', 'Slippery', 'Spectacular', 'Easy', 'Genius', 'Grumpy','Buttery','Spicey']
+  ua2 = ['fox','weasel','donkey','ocelot','stoat','rabbit','wombat','tapir','squirrel','otter','hedgehog']
+  useragent = random.choice(ua1) + random.choice(ua2) + " v" + str(random.randrange(0,60) + random.random())
+  if args.debug:
+    print "User agent: " + useragent
+
   #Setting User Agent#######
-  header = {'User-Agent': 'Mozilla/5.0'} #Needed to prevent 403 error on Wikipedia
+  header = {'User-Agent': 'Mozilla/5.0 ' + useragent}
   ##########################
+  
+  if args.debug:
+    print "Requesting linkedin profile"
   
   #Making HTTP req##########
   req = urllib2.Request(link,headers=header)
   page = urllib2.urlopen(req)
   soup = BeautifulSoup(page, "lxml")
-  # if args.debug:
-  #  print "Page: " + str( soup )
-  ##########################
-  
-  nameselect = "section.insights.profile-section li.profile-card h4 a"
-  companyselect = "section.insights.profile-section li.profile-card p.headline"
-
-  if args.debug:
-    print "Name select: "+ nameselect
-    print "Company select: " + companyselect
-  
-  # name = soup.select("div.insights-browse-map > ul > li > h4 > a")
-  name = soup.select(nameselect)
  
-  # company = soup.select("div.insights-browse-map > ul > li > p.browse-map-title")
-  company = soup.select(companyselect)
+  # Check this user, use the headline and current employment from the profile page
+  profile = soup.find("div", class_="profile-overview-content")
+  process_person( profile.find("h1", id="name"), profile.find( "p", class_="headline" ) + " " + profile.find( "span", class_="org" ), link, org )
 
+  cards = soup.find_all("li", class_="profile-card")
+  if args.debug:
+    print str(len(cards)) + " cards found"
+    print cards
+    print "Looping through cards"
+
+  for card in cards:
+    # if args.debug:
+    #   print "Card:"
+    #   print card
+   
+    name = card.find("h4").find("a").get_text()
+    company = card.find("p", class_="headline").get_text()
+    url = card.find("a")["href"]
+    
+    process_person( name, company, url, org )
+
+
+def process_person( name, company, url, org ):
   if args.debug:
     print name
     print company
-
-  while x == 1: 
-    global PRINT
-    PRINT = []
-    list1 = []
-    list2 = []
-    list3 = []
-
-    for i in name:
-      list1.append(i.getText())	
-      list3.append(i['href'])
-      #print i.getText()
-        
-    for c in company: 
-      list2.append(c.getText().lower() + ",")
-      #print c.getText()
-
-    for item in izip(list1, list2, list3):
-      #print item
-      if Org.lower() in item[1]:	
-        if item[2] not in URLS:
-          ##print item[0]+chr(9)+ item[1]+ chr(9) +item[2]
-          URLS.append(item[2])
-          EMAILS.append(item[0])
-          pre=(item[0]+ chr(9) + item[1]+ chr(9) +item[2])
-          data = filter(lambda x: x in string.printable, pre)
-          print data
-          PRINT.append(data)
-          target.write(data + "\n")			
-          if args.emailformat:
-            fn = string.split(item[0])[0]
-            fi = fn[0]
-            ln = ''.join(string.split(item[0])[1:])
-            li = ln[1]
-            email = args.emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
-            email2 = filter(lambda x: x in string.printable, email)
-            print email2
-            f = open( outfile + '.emails', 'a' )
-            f.write( email2 + "\n" )
-            
-            
-            #print email2
-            
-    x+=1
+    print url
+    print "Testing if "+org.lower()+" is in \"" + company.lower() + "\""
+  if org.lower() in company.lower():
+    if args.debug:
+      print "Company identified in job title"
+    if url not in URLS:
+      if args.debug:
+        print "New URL found, adding"
+      URLS.append(url)
+      data = name + chr(9) + company + chr(9) + url
+      data = filter(lambda x: x in string.printable, data)
+      sys.stdout.write( data )
+      target.write( data + "\n" )
+      if args.emailformat:
+        fn = string.split(name)[0]
+        fi = fn[0]
+        ln = ''.join(string.split(name)[1:])
+        li = ln[1]
+        email = args.emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
+        email2 = filter(lambda x: x in string.printable, email)
+        sys.stdout.write( chr(9) + email2 )
+        f = open( outfile + '.emails', 'a' )
+        f.write( email2 + "\n" )
+      sys.stdout.write( "\n" )
 
 def mangle_emails(names, pattern, orgname):
   global outfile
