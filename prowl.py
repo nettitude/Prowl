@@ -6,6 +6,7 @@ from itertools import izip
 import string
 import argparse
 import random
+import time
 
 #########################
 
@@ -18,8 +19,10 @@ parser = argparse.ArgumentParser(description="Scrape LinkedIn for staff members"
 parser.add_argument("-u", "--url", help="URL of a public profile to start a basic search from")
 parser.add_argument("-c", "--company", help="Company to search for")
 parser.add_argument("-o", "--outfile", help="Filename to write results to")
+parser.add_argument("-w", "--wait", help="Wait seconds between requests")
 parser.add_argument("-e", "--emailformat", help="Format of house email address style. Use: <fn>,<ln>,<fi>,<li> as placeholders for first/last name/initial. e.g <fi><ln>@company.com")
 parser.add_argument("-d", "--debug", action="store_true", help="Turn on debug output")
+parser.add_argument("-k", "--cookie", help="Values to send in Cookie: header to linkedin" )
 args = parser.parse_args()
 
 def deep_and_thorough( Org ):	
@@ -106,24 +109,44 @@ def greppage(link, org ):
 
   #Setting User Agent#######
   header = {'User-Agent': 'Mozilla/5.0 ' + useragent}
+  if args.cookie:
+    header['Cookie'] = args.cookie
   ##########################
   
   if args.debug:
     print "Requesting linkedin profile"
+    print header
   
   #Making HTTP req##########
-  req = urllib2.Request(link,headers=header)
-  page = urllib2.urlopen(req)
+  if args.wait:
+    if args.debug:
+      print "Delaying " + str( int(args.wait) ) + " seconds"
+    time.sleep(int(args.wait))
+  try:
+    req = urllib2.Request(link,headers=header)
+    page = urllib2.urlopen(req)
+  except Exception as e:
+    print "[WARNING] No page returned from " + link
+    print e
+    return 
+
   soup = BeautifulSoup(page, "lxml")
  
   # Check this user, use the headline and current employment from the profile page
   profile = soup.find("div", class_="profile-overview-content")
-  process_person( profile.find("h1", id="name"), profile.find( "p", class_="headline" ) + " " + profile.find( "span", class_="org" ), link, org )
+  name = profile.find("h1", id="name" ).get_text()
+  company =  profile.find("p", class_="headline").get_text() + " - " + profile.find("span", class_="org" ).get_text()
+  if args.debug:
+    # print profile
+    print name
+    print company
+  
+  process_person( name, company, link, org )
 
   cards = soup.find_all("li", class_="profile-card")
   if args.debug:
     print str(len(cards)) + " cards found"
-    print cards
+    # print cards
     print "Looping through cards"
 
   for card in cards:
