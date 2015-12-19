@@ -1,6 +1,6 @@
 # LinkedinCrawler
 
-[![Demo CountPages alpha](http://share.gifyoutube.com/KzB6Gb.gif)](https://www.youtube.com/watch?v=ZeIJW4dunUo)
+[![Demo CountPages alpha](https://j.gifs.com/gJ5J6D.gif)](https://www.youtube.com/watch?v=ZeIJW4dunUo)
 
 ## Quick Crawl
 Quick crawl required 2 variables and will recursivly work its way through a single user account
