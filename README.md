@@ -7,7 +7,12 @@ Quick crawl requires 2 variables and will recursivly work its way through a sing
 
 **Example:** python prowl.py -c "company name" -u "url to linkedin profile"
 
-## Deep and thorough (beta)
+## Deep and thorough
 A deep and thorough search will gather a list of profiles from yahoo
 
 **Example:**  python prowl.py -c "barclays"
+
+## Upcoming features ##
+- Mailing list production
+- Output to file
+- Multi threading
