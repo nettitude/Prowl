@@ -33,25 +33,27 @@ def greppage(company, emailformat):
     			print "ERROR POTENTIALLY BLOCK FROM LINKEDIN"
 		except httplib.HTTPException, e:
     			print "ERROR POTENTIALLY BLOCK FROM LINKEDIN"
-		soup = BeautifulSoup(contents, "lxml")
-		for td in soup.findAll("li", { "class":"profile-card" }):
-			link = td.find('a')['href'].lower()
-			for g in td.findAll('a'):
-            			name = g.getText()
-          		else:
-            			pass
-          		for f in td.findAll('p'):
-            			profile = f.getText().lower()
-			if company in profile:
-				if link not in URLS:
-					URLS.append(link)
-					if name+profile not in found:		
-						found.append(name+profile)
-						if emailformat:
-							mangle_emails(name, company, emailformat, profile)
-						else:
-							print name + "," + profile
-
+		try:
+			soup = BeautifulSoup(contents, "lxml")
+			for td in soup.findAll("li", { "class":"profile-card" }):
+				link = td.find('a')['href'].lower()
+				for g in td.findAll('a'):
+            				name = g.getText()
+          			else:
+            				pass
+          			for f in td.findAll('p'):
+            				profile = f.getText().lower()
+				if company in profile:
+					if link not in URLS:
+						URLS.append(link)
+						if name+profile not in found:		
+							found.append(name+profile)
+							if emailformat:
+								mangle_emails(name, company, emailformat, profile)
+							else:
+								print name + "," + profile
+		except:
+			pass
 def search(companyname, emailformat):
 	global URLS
 	emailformat
