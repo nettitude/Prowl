@@ -1,110 +1,91 @@
-
 from bs4 import BeautifulSoup
 import urllib2
 import sys
-from itertools import izip
 import string
 import argparse
-import requests
 from colorama import Fore, Back, Style
 from colorama import init
 
-GOOGLE = []
+URLS = []
+found = []
 
 parser = argparse.ArgumentParser(description="Scrape LinkedIn for staff members")
 parser.add_argument("-u", "--url", help="URL of a public profile to start a basic search from")
 parser.add_argument("-c", "--company", help="Company to search for")
+parser.add_argument("-e", "--emailformat", help="Format of house email address style. Use: <fn>,<ln>,<fi>,<li> as placeholders for first/last name/initial. e.g <fi><ln>@company.com")
 args = parser.parse_args()
 
-URLS = []
-FOUND = []
+def greppage(company, emailformat):
+	global URLS
+	for i in URLS:
+		request_headers = {
+		"Accept-Language": "en-US,en;q=0.5",
+		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0",
+		"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+		"Connection": "keep-alive" }
+		try:
+			request = urllib2.Request(i, headers=request_headers)
+			contents = urllib2.urlopen(request).read()
+		except KeyboardInterrupt:
+			sys.exit(0)
+		except urllib2.HTTPError, e:
+    			print "ERROR POTENTIALLY BLOCK FROM LINKEDIN"
+		except urllib2.URLError, e:
+    			print "ERROR POTENTIALLY BLOCK FROM LINKEDIN"
+		except httplib.HTTPException, e:
+    			print "ERROR POTENTIALLY BLOCK FROM LINKEDIN"
+		soup = BeautifulSoup(contents, "lxml")
+		for td in soup.findAll("li", { "class":"profile-card" }):
+			link = td.find('a')['href'].lower()
+			for g in td.findAll('a'):
+            			name = g.getText()
+          		else:
+            			pass
+          		for f in td.findAll('p'):
+            			profile = f.getText().lower()
+			if company in profile:
+				if link not in URLS:
+					URLS.append(link)
+					if name+profile not in found:		
+						found.append(name+profile)
+						if emailformat:
+							mangle_emails(name, company, emailformat, profile)
+						else:
+							print name + "," + profile
 
-##########################
+def search(companyname, emailformat):
+	global URLS
+	emailformat
+	companyname = companyname.lower()
+	header = {'User-Agent': 'Mozilla/5.0'}
+	req = urllib2.Request("https://uk.search.yahoo.com/search?p=profile%20"+companyname.replace(" ", "%20")+"%20linkedin.com/")
+	page = urllib2.urlopen(req)
+  	soup = BeautifulSoup(page, "lxml")
+	company = soup.findAll("h3", {"class" : "title"})	
+	print(Fore.GREEN + "################# FOUND ACCOUNTS #################" + Style.RESET_ALL)
+	for i in company:
+		c = i.find("a")
+		href = c['href']
+		if "linkedin.com/in/" in href:
+			print href
+			URLS.append(href)
+		if "linkedin.com/pub/" in href:
+			print href
+			URLS.append(href)
+	print(Fore.GREEN + "##################################################" + Style.RESET_ALL)
+	greppage(companyname, emailformat)
 
-
-def greppage(org, link):
-  #Setting User Agent#######
-  header = {'User-Agent': 'WatchFish'} #Needed to prevent 403 error on Wikipedia
-  ##########################
-  #Making HTTP req##########
-  req = requests.get(link,headers=header)
-  page = req.text
-  soup = BeautifulSoup(page, "lxml")
-  for td in soup.findAll("li", { "class":"profile-card" }):
-    item = td.getText()
-    #print td.find('a')['href']
-    URLS.append(td.find('a')['href'].lower())   
-    try:
-      for i in URLS:
-        #Setting User Agent#######
-        header = {'User-Agent': 'WatchFish'} #Needed to prevent 403 error on Wikipedia
-        ##########################
-        #Making HTTP req##########
-        req = urllib2.Request(i,headers=header)
-        page = urllib2.urlopen(req)
-        soup = BeautifulSoup(page, "lxml")
-        for td in soup.findAll("li", { "class":"profile-card" }):
-          url = td.find('a')['href'].lower()
-          for g in td.findAll('a'):
-            name = g.getText()
-          else:
-            pass
-          for f in td.findAll('p'):
-            profile = f.getText().lower()
-          full = name+profile
-          if org.lower() in profile.lower():
-               if full not in FOUND:
-                FOUND.append(full)
-                print(Fore.GREEN + name + "  " + Fore.YELLOW + profile  + Style.RESET_ALL)    
-
-    except:
-      pass
-def deep_and_thorough(org):	
-  global GOOGLE, EMAILS, URLS
-  company2 = org.lower()
-  company3 = company2.replace(" ", "%20")
-  #Setting User Agent#######
-  header = {'User-Agent': 'Mozilla/5.0'} #Needed to prevent 403 error on Wikipedia
-  ##########################
-        
-  #Making HTTP req##########
-  print(Fore.RED + "Searching Yahoo" + Style.RESET_ALL)
-  req = urllib2.Request("https://uk.search.yahoo.com/search?p="+company3+"linkedin%20profile")
-  page = urllib2.urlopen(req)
-  soup = BeautifulSoup(page, "lxml")
-  ##########################
-  company = soup.findAll("h3", {"class" : "title"})
-
-  for i in company:
-    c = i.find("a")
-    GOOGLE.append(c['href'])
-  ##########################
-  print(Fore.GREEN + "################# FOUND ACCOUNTS #################" + Style.RESET_ALL)
-  print("\n".join(GOOGLE))
-  print(Fore.GREEN + "##################################################" + Style.RESET_ALL)
-  print "---------------------------------------"
-  print(Fore.RED + "Searching for: " + org +Style.RESET_ALL)
-  print "----------------------------------------"
-
-  for link in GOOGLE:
-    try:
-      if "linkedin.com/pub/" or "linkedin.com/in/" or "Linkedin.com/in/" or "Linkedin.com/in/" in link:
-        #print link
-        URLS.append(link)
-      else:
-        pass
-    except: "Yahoo dun goofed"  
-
-  for i in URLS:
-  	try:
-		greppage(company2, i)
-	except:
-		pass   
-if args.url:
-    greppage(args.company,args.url)
-else:
-    deep_and_thorough(args.company)
+def mangle_emails(name, company, emailformat, profile):
+	fn = string.split(name)[0]
+	fi = fn[0]
+	ln = string.split(name)[1]
+	li = ln[0]
+	email = emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
+	email2 = filter(lambda x: x in string.printable, email)
+	print name + "," + profile + "," + email2
+	
 
 
-
-
+if args.company:
+	search(args.company, args.emailformat)
+	
