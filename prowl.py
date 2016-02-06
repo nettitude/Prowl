@@ -10,9 +10,8 @@ URLS = []
 found = []
 
 parser = argparse.ArgumentParser(description="Scrape LinkedIn for staff members")
-parser.add_argument("-u", "--url", help="URL of a public profile to start a basic search from")
 parser.add_argument("-c", "--company", help="Company to search for")
-parser.add_argument("-e", "--emailformat", help="Format of house email address style. Use: <fn>,<ln>,<fi>,<li> as placeholders for first/last name/initial. e.g <fi><ln>@company.com")
+parser.add_argument("-e", "--emailformat", help='Format of house email address style. Use: <fn>,<ln>,<fi>,<li> as placeholders for first/last name/initial. e.g "<fi><ln>@company.com"')
 args = parser.parse_args()
 
 def greppage(company, emailformat):
@@ -85,7 +84,7 @@ def mangle_emails(name, company, emailformat, profile):
 	print name + "," + profile + "," + email2
 	
 
-
 if args.company:
 	search(args.company, args.emailformat)
-	
+else:
+	args.help
