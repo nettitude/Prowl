@@ -100,4 +100,4 @@ def mangle_emails(name, company, emailformat, profile):
 if args.company:
 	search(args.company, args.emailformat)
 else:
-	args.help
+	parser.print_usage()
