@@ -28,11 +28,11 @@ def greppage(company, emailformat):
 		except KeyboardInterrupt:
 			sys.exit(0)
 		except urllib2.HTTPError, e:
-    			print "ERROR POTENTIALLY BLOCK FROM LINKEDIN"
+    			print "BLOCKED BY LINKEDIN"
 		except urllib2.URLError, e:
-    			print "ERROR POTENTIALLY BLOCK FROM LINKEDIN"
+    			print "BLOCKED BY LINKEDIN"
 		except httplib.HTTPException, e:
-    			print "ERROR POTENTIALLY BLOCK FROM LINKEDIN"
+    			print "BLOCKED BY LINKEDIN"
 		try:
 			soup = BeautifulSoup(contents, "lxml")
 			for td in soup.findAll("li", { "class":"profile-card" }):
@@ -55,6 +55,7 @@ def greppage(company, emailformat):
 		except:
 			pass
 def search(companyname, emailformat):
+	welcome(companyname, emailformat)
 	global URLS
 	emailformat
 	companyname = companyname.lower()
@@ -76,7 +77,15 @@ def search(companyname, emailformat):
 	print(Fore.GREEN + "##################################################" + Style.RESET_ALL)
 	greppage(companyname, emailformat)
 
+
+def welcome(companyname,emailformat):
+	print "#"*50
+	print "Prowl"+" "*34+"Version:1.0"
+	print "Author: @MattSPickford\n"
+	if emailformat:
+		print "Output file name: "+emailformat.split("@")[1]+".txt"
 def mangle_emails(name, company, emailformat, profile):
+	target = open(company+".txt", 'a')
 	fn = string.split(name)[0]
 	fi = fn[0]
 	ln = string.split(name)[1]
@@ -84,7 +93,9 @@ def mangle_emails(name, company, emailformat, profile):
 	email = emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
 	email2 = filter(lambda x: x in string.printable, email)
 	print name + "," + profile + "," + email2
+	target.write(email2+"\n")
 	
+
 
 if args.company:
 	search(args.company, args.emailformat)
