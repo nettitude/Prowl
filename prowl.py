@@ -21,10 +21,14 @@ if (html != cversion):
         print "#" * 50
         print ""
         print ""
-        print "Pr0wl is not up to date, updating..."
-        os.system("git fetch --all")
-        os.system("git reset --hard origin/master")
-        g = git.cmd.Git("https://github.com/Pickfordmatt/Prowl")
+        Join = input('New version found, would you like to update? (Y/N)').lower()
+        if Join == 'y':
+                print "Pr0wl is not up to date, updating..."
+                os.system("git fetch --all")
+                os.system("git reset --hard origin/master")
+                g = git.cmd.Git("https://github.com/Pickfordmatt/Prowl")
+        if Join == 'n':
+                pass
         print ""
         print ""
         print "#" * 50
