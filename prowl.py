@@ -84,6 +84,8 @@ def welcome(companyname,emailformat):
 	print "#"*50
 	print "Prowl"+" "*34+"Version:1.0"
 	print "Author: @MattSPickford\n"
+	if not os.path.exists("Output"):
+		os.makedirs("Output")
 	if emailformat:
 		print "Output file name: "+emailformat.split("@")[1]+".txt"
 def mangle_emails(name, company, emailformat, profile):
@@ -95,7 +97,7 @@ def mangle_emails(name, company, emailformat, profile):
 	email = emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
 	email2 = filter(lambda x: x in string.printable, email)
 	print name + "," + profile + "," + email2
-	target.write(email2+"\n")
+	target.write("Output/"email2+"\n")
 	
 
 
