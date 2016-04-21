@@ -7,8 +7,15 @@ html = response.read()
 openfile = open('Version.txt', 'r')
 cversion = openfile.readline()
 
-if (html == cversion):
-        print "Pr0wl is upto date"
+def welcome(companyname,emailformat):
+        print "#"*50
+        print "Prowl"+" "*34+"Version:1.0"
+        print "Author: @MattSPickford\n"
+        print "#"*50
+        
+welcome()
+                
+
 
 if (html != cversion):
         print "*" * 60
