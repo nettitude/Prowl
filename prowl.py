@@ -97,7 +97,7 @@ def mangle_emails(name, company, emailformat, profile):
 	email = emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
 	email2 = filter(lambda x: x in string.printable, email)
 	print name + "," + profile + "," + email2
-	target.write("Output/"email2+"\n")
+	target.write("Output/+"email2+"\n")
 	
 
 
