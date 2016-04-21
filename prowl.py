@@ -18,7 +18,7 @@ welcome()
 
 
 if (html != cversion):
-        print "#" * 50
+        print(Fore.GREEN + "##################################################" + Style.RESET_ALL)
         print ""
         print ""
         Join = raw_input('New version found, would you like to update? (Y/N)').lower()
@@ -31,7 +31,7 @@ if (html != cversion):
                 pass
         print ""
         print ""
-        print "#" * 50
+        print(Fore.GREEN + "##################################################" + Style.RESET_ALL)
 
 
 import run
