@@ -90,7 +90,7 @@ def welcome(companyname,emailformat):
 	if emailformat:
 		print "Output file name: "+emailformat.split("@")[1]+".txt"
 def mangle_emails(name, company, emailformat, profile):
-	target = open(company+".txt", 'a')
+	target = open("Output/"+company+".txt", 'a')
 	fn = string.split(name)[0]
 	fi = fn[0]
 	ln = string.split(name)[1]
