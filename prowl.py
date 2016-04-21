@@ -7,7 +7,7 @@ html = response.read()
 openfile = open('Version.txt', 'r')
 cversion = openfile.readline()
 
-def welcome(companyname,emailformat):
+def welcome():
         print "#"*50
         print "Prowl"+" "*34+"Version:1.0"
         print "Author: @MattSPickford\n"
