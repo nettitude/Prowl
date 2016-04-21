@@ -7,9 +7,6 @@ html = response.read()
 openfile = open('Version.txt', 'r')
 cversion = openfile.readline()
 
-print html
-print cversion
-
 if (html == cversion):
         print "Pr0wl is upto date"
 
