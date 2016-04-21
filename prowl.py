@@ -18,7 +18,7 @@ welcome()
 
 
 if (html != cversion):
-        print "*" * 60
+        print "#" * 50
         print ""
         print ""
         print "Pr0wl is not up to date, updating..."
@@ -27,7 +27,7 @@ if (html != cversion):
         g = git.cmd.Git("https://github.com/Pickfordmatt/Prowl")
         print ""
         print ""
-        print "*" * 60
+        print "#" * 50
 
 
 import run
