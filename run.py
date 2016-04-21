@@ -58,7 +58,7 @@ def greppage(company, emailformat):
 		except:
 			pass
 def search(companyname, emailformat):
-	formatoutput(companyname, emailformat)
+	formatout(companyname, emailformat)
 	global URLS
 	emailformat
 	companyname = companyname.lower()
