@@ -6,6 +6,8 @@ import argparse
 from colorama import Fore, Back, Style
 from colorama import init
 
+print "code updated"
+
 URLS = []
 found = []
 
