@@ -84,6 +84,10 @@ def search(companyname, emailformat):
 def formatout(companyname,emailformat):
 	if emailformat:
 		print "Output file name: "+emailformat.split("@")[1]+".txt"
+	if not os.path.exists("Output"):
+		os.makedirs("Output")	
+		
+		
 def mangle_emails(name, company, emailformat, profile):
 	target = open("Output/"+company+".txt", 'a')
 	fn = string.split(name)[0]
