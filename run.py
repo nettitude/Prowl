@@ -58,7 +58,7 @@ def greppage(company, emailformat):
 		except:
 			pass
 def search(companyname, emailformat):
-	welcome(companyname, emailformat)
+	formatoutput(companyname, emailformat)
 	global URLS
 	emailformat
 	companyname = companyname.lower()
@@ -81,12 +81,7 @@ def search(companyname, emailformat):
 	greppage(companyname, emailformat)
 
 
-def welcome(companyname,emailformat):
-	print "#"*50
-	print "Prowl"+" "*34+"Version:1.0"
-	print "Author: @MattSPickford\n"
-	if not os.path.exists("Output"):
-		os.makedirs("Output")
+def formatout(companyname,emailformat):
 	if emailformat:
 		print "Output file name: "+emailformat.split("@")[1]+".txt"
 def mangle_emails(name, company, emailformat, profile):
