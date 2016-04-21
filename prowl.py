@@ -9,7 +9,7 @@ cversion = openfile.readline()
 
 def welcome():
         print "#"*50
-        print "Prowl"+" "*34+"Version:1.0"
+        print "Prowl"+" "*34+"Version:1.1"
         print "Author: @MattSPickford\n"
        
         
