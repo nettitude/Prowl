@@ -7,8 +7,6 @@ from colorama import Fore, Back, Style
 from colorama import init
 import os
 
-v = "test"
-
 URLS = []
 found = []
 
