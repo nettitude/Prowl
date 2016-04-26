@@ -3,10 +3,25 @@ import os
 import git
 
 def welcome():
-        print "#"*50
-        print "Prowl"+" "*34+"Version:1.1"
+        print "_"*50
+        print ""
         print "Author: @MattSPickford"
+        print '''     
+  _____     ______    ______  ___  ___  ___ ___
+ /      \  /      \  /      \ |  \ |  \ |  \| $$
+|  $$$$$$\|  $$$$$$\|  $$$$$$\| $$ | $$ | $$| $$
+| $$  | $$| $$   \$$| $$  | $$| $$ | $$ | $$| $$
+| $$__/ $$| $$      | $$__/ $$| $$_/ $$_/ $$| $$
+| $$    $$| $$       \$$    $$ \$$   $$   $$| $$
+| $$$$$$$  \$$        \$$$$$$   \$$$$$\$$$$  \$$
+| $$
+| $$
+ \$$             '''
+
+        print "_"*50
+        print ""
 welcome()
+
 
 response = urllib2.urlopen('https://raw.githubusercontent.com/Pickfordmatt/Prowl/master/Version.txt')
 html = response.read()
