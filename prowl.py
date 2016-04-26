@@ -5,7 +5,6 @@ import git
 def welcome():
         print "_"*50
         print ""
-        print "Author: @MattSPickford"
         print '''     
   _____     ______    ______  ___  ___  ___ ___
  /      \  /      \  /      \ |  \ |  \ |  \| $$
@@ -17,7 +16,7 @@ def welcome():
 | $$
 | $$
  \$$             '''
-
+        print "Author: @MattSPickford"
         print "_"*50
         print ""
 welcome()
