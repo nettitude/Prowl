@@ -11,15 +11,13 @@ def welcome():
         print "#"*50
         print "Prowl"+" "*34+"Version:1.1"
         print "Author: @MattSPickford\n"
-       
+    
         
 welcome()
                 
 
 
 if (html != cversion):
-        print ""
-        print ""
         Join = raw_input('New version found, would you like to update? (Y/N)').lower()
         if Join == 'y':
                 print "Pr0wl is not up to date, updating..."
