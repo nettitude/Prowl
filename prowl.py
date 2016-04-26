@@ -7,16 +7,6 @@ html = response.read()
 openfile = open('Version.txt', 'r')
 cversion = openfile.readline()
 
-def welcome():
-        print "#"*50
-        print "Prowl"+" "*34+"Version:1.1"
-        print "Author: @MattSPickford\n"
-    
-        
-welcome()
-                
-
-
 if (html != cversion):
         Join = raw_input('New version found, would you like to update? (Y/N)').lower()
         if Join == 'y':
