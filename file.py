@@ -55,6 +55,7 @@ def greppage(company, emailformat):
 								print name + "," + profile
 		except:
 			pass
+
 def search(companyname, emailformat):
 	formatout(companyname, emailformat)
 	global URLS
@@ -64,8 +65,9 @@ def search(companyname, emailformat):
 	req = urllib2.Request("https://uk.search.yahoo.com/search?p=profile%20"+companyname.replace(" ", "%20")+"%20linkedin.com/")
 	page = urllib2.urlopen(req)
   	soup = BeautifulSoup(page, "lxml")
-	company = soup.findAll("h3", {"class" : "title"})	
-	print(Fore.GREEN + "################# FOUND ACCOUNTS #################" + Style.RESET_ALL)
+	company = soup.findAll("h3", {"class" : "title"})
+	print ""
+	print "################# FOUND ACCOUNTS #################"
 	try:
 		for i in company:
 			c = i.find("a")
@@ -79,16 +81,14 @@ def search(companyname, emailformat):
 	except:
 		print "No accounts found via the search engine"
 		
-	print(Fore.GREEN + "##################################################" + Style.RESET_ALL)
+	print "##################################################"
 	greppage(companyname, emailformat)
-
 
 def formatout(companyname,emailformat):
 	if emailformat:
 		print "Output file name: "+emailformat.split("@")[1]+".txt"
 	if not os.path.exists("Output"):
 		os.makedirs("Output")	
-		
 		
 def mangle_emails(name, company, emailformat, profile):
 	target = open("Output/"+company+".txt", 'a')
@@ -101,8 +101,6 @@ def mangle_emails(name, company, emailformat, profile):
 	print name + "," + profile + "," + email2
 	target.write(email2+"\n")
 	
-
-
 if args.company:
 	search(args.company, args.emailformat)
 else:
