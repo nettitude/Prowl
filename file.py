@@ -76,7 +76,7 @@ def search(companyname, emailformat):
 			if "linkedin.com/pub/" in href:
 				print href
 				URLS.append(href)
-	else:
+	except:
 		print "No accounts found via the search engine"
 		
 	print(Fore.GREEN + "##################################################" + Style.RESET_ALL)
