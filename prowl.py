@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import urllib2
 import os
 import git
