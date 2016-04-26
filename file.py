@@ -85,6 +85,9 @@ def search(companyname, emailformat):
 	greppage(companyname, emailformat)
 
 def formatout(companyname,emailformat):
+	print "#"*50
+        print "Prowl"+" "*34+"Version:1.1"
+        print "Author: @MattSPickford\n"
 	if emailformat:
 		print "Output file name: "+emailformat.split("@")[1]+".txt"
 	if not os.path.exists("Output"):
