@@ -4,8 +4,7 @@ import git
 
 def welcome():
         print "_"*50
-        print ""
-        print '''     
+        print ''' \n    
   _____     ______    ______  ___  ___  ___ ___
  /      \  /      \  /      \ |  \ |  \ |  \| $$
 |  $$$$$$\|  $$$$$$\|  $$$$$$\| $$ | $$ | $$| $$
@@ -15,7 +14,7 @@ def welcome():
 | $$$$$$$  \$$        \$$$$$$   \$$$$$\$$$$  \$$
 | $$
 | $$
- \$$             '''
+ \$$    \n         '''
         print "Author: @MattSPickford"
         print "_"*50
         print ""
