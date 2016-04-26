@@ -66,15 +66,19 @@ def search(companyname, emailformat):
   	soup = BeautifulSoup(page, "lxml")
 	company = soup.findAll("h3", {"class" : "title"})	
 	print(Fore.GREEN + "################# FOUND ACCOUNTS #################" + Style.RESET_ALL)
-	for i in company:
-		c = i.find("a")
-		href = c['href']
-		if "linkedin.com/in/" in href:
-			print href
-			URLS.append(href)
-		if "linkedin.com/pub/" in href:
-			print href
-			URLS.append(href)
+	try:
+		for i in company:
+			c = i.find("a")
+			href = c['href']
+			if "linkedin.com/in/" in href:
+				print href
+				URLS.append(href)
+			if "linkedin.com/pub/" in href:
+				print href
+				URLS.append(href)
+	else:
+		print "No accounts found via the search engine"
+		
 	print(Fore.GREEN + "##################################################" + Style.RESET_ALL)
 	greppage(companyname, emailformat)
 
