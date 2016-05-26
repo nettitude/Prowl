@@ -100,7 +100,7 @@ def mangle_emails(name, company, emailformat, profile):
 	email = emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
 	email2 = filter(lambda x: x in string.printable, email)
 	print name + "," + profile + "," + email2
-	target.write(email2+"\n")
+	target.write(email2+"\r\n")
 	
 def dns_enum(domain):
 	print '\033[1;42mMX Records                         \033[1;m'
