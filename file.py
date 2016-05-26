@@ -89,7 +89,7 @@ def formatout(companyname,emailformat):
 		print "Output file name: "+emailformat.split("@")[1]+".txt"
 	if not os.path.exists("Output"):
 		os.makedirs("Output")
-	dns_enum(domain)
+	#dns_enum(domain)
 		
 def mangle_emails(name, company, emailformat, profile):
 	target = open("Output/"+company+".txt", 'a')
