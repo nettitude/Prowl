@@ -67,16 +67,16 @@ def search(companyname, emailformat):
   	soup = BeautifulSoup(page, "lxml")
 	company = soup.findAll("h3", {"class" : "title"})
 	print ""
-	print '\033[1;42mAccounts found via Yahoo           \033[1;m'
+	#print '\033[1;42mAccounts found via Yahoo           \033[1;m'
 	try:
 		for i in company:
 			c = i.find("a")
 			href = c['href']
 			if "linkedin.com/in/" in href:
-				print href
+		#		print href
 				URLS.append(href)
 			if "linkedin.com/pub/" in href:
-				print href
+		#		print href
 				URLS.append(href)
 	except:
 		print "No accounts found via the search engine"
@@ -100,7 +100,7 @@ def mangle_emails(name, company, emailformat, profile):
 	email = emailformat.replace('<fn>',fn).replace('<ln>',ln).replace('<fi>',fi).replace('<li>',li).lower()
 	email2 = filter(lambda x: x in string.printable, email)
 	print name + "," + profile + "," + email2
-	target.write(email2+"\r\n")
+	target.write(email2+"\n")
 	
 def dns_enum(domain):
 	print '\033[1;42mMX Records                         \033[1;m'
