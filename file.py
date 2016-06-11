@@ -20,7 +20,7 @@ parser.add_argument("-s", "--sub", help="Subdomain bruteforcer")
 args = parser.parse_args()
 
 def greppage(company, emailformat):
-	print '\033[1;42mEmail Addresses Found              \033[1;m'
+	print '\033[1;42mEmail Addresses Found              \033[0;m'
 	global URLS
 	for i in URLS:
 		request_headers = {
@@ -100,7 +100,7 @@ def mangle_emails(name, company, emailformat, profile):
 		req = urllib2.urlopen("https://haveibeenpwned.com/api/breachedaccount/"+email2+"?truncateResponse=true")
 		data = json.load(req)
         	try:
-			print name + ' | ' + profile + ' | ' + email2 + ' | ' + "\033[1;41m"+ ", ".join(data) +"\033[1;m"
+			print name + ' | ' + profile + ' | ' + email2 + ' | ' + "\033[1;41m"+ ", ".join(data) +"\033[0;m"
 			out = email2 + "	" +", ".join(data)
 			target.write(out+"\r\n")
 		except:
@@ -110,7 +110,7 @@ def mangle_emails(name, company, emailformat, profile):
 		target.write(email2+"\r\n")
 
 def dns_enum(domain):
-	print '\033[1;42mMX Records                         \033[1;m'
+	print '\033[1;42mMX Records                         \033[0;m'
 	answers = dns.resolver.query(domain, 'MX')
 	for rdata in answers:
   		print rdata.exchange
