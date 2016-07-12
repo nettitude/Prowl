@@ -11,7 +11,7 @@
 python prowl.py -c "Yahoo" -e "<fn><ln>@yahoo.com"
 
 ### Deep Search
-python prowl.py -c "Yahoo" -e "<fn><ln>@yahoo.com" -p <Linkedin Profile URL>
+python prowl.py -c "Yahoo" -e "<fn><ln>@yahoo.com" -p "<Linkedin Profile URL>"
 
 
 [![Loading demo....](https://j.gifs.com/gJ5J6D.gif)](https://www.youtube.com/watch?v=ZeIJW4dunUo)
