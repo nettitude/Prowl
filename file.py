@@ -117,6 +117,6 @@ def dns_enum(domain):
 if args.company:
         if args.profile:
                 URLS.append(args.profile)
-        search(args.company, args.emailformat)t)
+        search(args.company, args.emailformat)
 else:
 	parser.print_usage()
