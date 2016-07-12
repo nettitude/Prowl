@@ -16,7 +16,7 @@ found = []
 parser = argparse.ArgumentParser(description="Scrape LinkedIn for staff members")
 parser.add_argument("-c", "--company", help="Company to search for")
 parser.add_argument("-e", "--emailformat", help='Format of house email address style. Use: <fn>,<ln>,<fi>,<li> as placeholders for first/last name/initial. e.g "<fi><ln>@company.com"')
-parser.add_argument("-s", "--sub", help="Subdomain bruteforcer")
+parser.add_argument("-p", "--profile", help="Linkedin Profile Accounts to start with")
 args = parser.parse_args()
 
 def greppage(company, emailformat):
@@ -115,6 +115,8 @@ def dns_enum(domain):
 	for rdata in answers:
   		print rdata.exchange
 if args.company:
-	search(args.company, args.emailformat)
+        if args.profile:
+                URLS.append(args.profile)
+        search(args.company, args.emailformat)t)
 else:
 	parser.print_usage()
