@@ -13,10 +13,11 @@ import json
 URLS = []
 found = []
 
-parser = argparse.ArgumentParser(description="Scrape LinkedIn for staff members")
+parser = argparse.ArgumentParser(description="Scrape LinkedIn for company staff members")
 parser.add_argument("-c", "--company", help="Company to search for")
 parser.add_argument("-e", "--emailformat", help='Format of house email address style. Use: <fn>,<ln>,<fi>,<li> as placeholders for first/last name/initial. e.g "<fi><ln>@company.com"')
-parser.add_argument("-p", "--profile", help="Linkedin Profile Accounts to start with")
+parser.add_argument("-p", "--profile", help="LinkedIn profile account to start with")
+parser.add_argument("-s", "--subdomain", help='Optional - LinkedIn subdomain used in target company country. e.g "au", "uk" (Default None)', default="")
 args = parser.parse_args()
 
 def greppage(company, emailformat):
@@ -25,7 +26,7 @@ def greppage(company, emailformat):
 	for i in URLS:
 		request_headers = {
 		"Accept-Language": "en-US,en;q=0.5",
-		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:40.0) Gecko/20100101 Firefox/40.0",
+		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0",
 		"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 		"Connection": "keep-alive" }
 		try:
@@ -57,13 +58,18 @@ def greppage(company, emailformat):
 		except:
 			pass
 
-def search(companyname, emailformat):
+def search(companyname, emailformat, subdomain):
 	formatout(companyname, emailformat)
 	global URLS
 	emailformat
 	companyname = companyname.lower()
+	if subdomain != "":
+		subdomain = subdomain + "."
 	header = {'User-Agent': 'Mozilla/5.0'}
-	req = urllib2.Request("https://uk.search.yahoo.com/search?p=profile%20"+companyname.replace(" ", "%20")+"%20linkedin.com/")
+	# TODO: Add support for other Yahoo subdomains - Works okay for companies outside of UK the time being though
+	search_url = "https://uk.search.yahoo.com/search?p=" + companyname.replace(" ", "%20") + "%20" + subdomain + "linkedin.com"
+	# print search_url
+	req = urllib2.Request(search_url)
 	page = urllib2.urlopen(req)
   	soup = BeautifulSoup(page, "lxml")
 	company = soup.findAll("h3", {"class" : "title"})
@@ -75,6 +81,10 @@ def search(companyname, emailformat):
 			if "linkedin.com/in/" in href:
 				URLS.append(href)
 			if "linkedin.com/pub/" in href:
+				URLS.append(href)
+			if "linkedin.com%2fin%2f" in href:
+				URLS.append(href)
+			if "linkedin.com%2fpub%2f" in href:
 				URLS.append(href)
 	except:
 		print "No accounts found via the search engine"
@@ -117,6 +127,6 @@ def dns_enum(domain):
 if args.company:
         if args.profile:
                 URLS.append(args.profile)
-        search(args.company, args.emailformat)
+        search(args.company, args.emailformat, args.subdomain)
 else:
 	parser.print_usage()

@@ -23,7 +23,7 @@ def welcome():
 welcome()
 
 
-response = urllib2.urlopen('https://raw.githubusercontent.com/Pickfordmatt/Prowl/master/Version.txt')
+response = urllib2.urlopen('https://raw.githubusercontent.com/sudosammy/Prowl/master/Version.txt')
 html = response.read()
 openfile = open('Version.txt', 'r')
 cversion = openfile.readline()
@@ -34,7 +34,7 @@ if (html != cversion):
                 print "Pr0wl is not up to date, updating..."
                 os.system("git fetch --all")
                 os.system("git reset --hard origin/master")
-                g = git.cmd.Git("https://github.com/Pickfordmatt/Prowl")
+                g = git.cmd.Git("https://github.com/sudosammy/Prowl.git")
         if Join == 'n':
                 pass
         print ""
