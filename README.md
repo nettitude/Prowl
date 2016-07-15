@@ -2,7 +2,7 @@
 
 ## Install Instructions
 
-* git clone https://github.com/sudosammy/Prowl.git
+* git clone https://github.com/pickfordmatt/prowl
 * apt-get install python-pip python-lxml
 * pip install dnspython Beautifulsoup4 Gitpython
 
