@@ -27,7 +27,7 @@ def greppage(company, emailformat):
 	global URLS
 	for i in URLS:
 		try:
-			sleep(randint(0,1))
+			sleep(randint(2,4))
 			from pyvirtualdisplay import Display
 			from selenium import webdriver
 			display = Display(visible=0, size=(800, 600))
