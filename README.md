@@ -5,7 +5,9 @@
 * git clone https://github.com/pickfordmatt/prowl
 * apt-get install python-pip python-lxml xvfb
 * pip install dnspython Beautifulsoup4 Gitpython pyvirtualdisplay
-* 
+
+## Requirements
+* Firefox
 
 ## Example Usage
 ### Basic Search
