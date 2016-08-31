@@ -9,6 +9,8 @@ import socket
 import dns.resolver
 import os
 import json
+from random import randint
+from time import sleep
 
 URLS = []
 found = []
@@ -24,18 +26,24 @@ def greppage(company, emailformat):
 	print '\033[1;42mEmail Addresses Found              \033[0;m'
 	global URLS
 	for i in URLS:
-		request_headers = {
-		"Accept-Language": "en-US,en;q=0.5",
-		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64; rv:47.0) Gecko/20100101 Firefox/47.0",
-		"Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-		"Connection": "keep-alive" }
 		try:
-			request = urllib2.Request(i, headers=request_headers)
-			contents = urllib2.urlopen(request).read()
+			sleep(randint(0,1))
+			from pyvirtualdisplay import Display
+			from selenium import webdriver
+			display = Display(visible=0, size=(800, 600))
+			display.start()
+			browser = webdriver.Firefox()
+			browser.get(i)
+			contents = browser.page_source
+			browser.quit()
+			display.stop()
+
 		except KeyboardInterrupt:
 			sys.exit(0)
 		except:
-			print "Potential Block from Linkedin"
+			#print contents
+			pass	
+	
 		try:
 			soup = BeautifulSoup(contents, "lxml")
 			for td in soup.findAll("li", { "class":"profile-card" }):
@@ -87,8 +95,7 @@ def search(companyname, emailformat, subdomain):
 			if "linkedin.com%2fpub%2f" in href:
 				URLS.append(href)
 	except:
-		print "No accounts found via the search engine"
-
+		pass
 	greppage(companyname, emailformat)
 
 def formatout(companyname,emailformat):
