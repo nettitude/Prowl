@@ -1,4 +1,4 @@
-# Pr0wl
+# Prowl
 
 ## Install Instructions
 
