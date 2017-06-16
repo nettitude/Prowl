@@ -3,18 +3,20 @@
 ## Install Instructions
 
 * git clone https://github.com/pickfordmatt/prowl
-* apt-get install python-pip python-lxml xvfb
-* pip install dnspython Beautifulsoup4 Gitpython pyvirtualdisplay
+* pip install -r requirements.txt
 
 ## Requirements
-* Firefox
+* BeautifulSoup
+* GitPython
 
-## Example Usage
-### Basic Search
+## Example usage
+### Basic search
 python prowl.py -c "Yahoo" -e "&lt;fn&gt;&lt;ln&gt;@yahoo.com"
 
-### Deep Search
-python prowl.py -c "Yahoo" -e "&lt;fn&gt;&lt;ln&gt;@yahoo.com" -p "&lt;Linkedin Profile URL&gt;" -s "au"
+### Exclude jobs
+python prowl.py -c "Yahoo" -e "&lt;fn&gt;&lt;ln&gt;@yahoo.com" -nj
 
-
+### Change search depth
+SMALLER IS LESS RESULTS
+python prowl.py -c "Yahoo" -e "&lt;fn&gt;&lt;ln&gt;@yahoo.com" -d "10"
 
