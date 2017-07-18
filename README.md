@@ -15,6 +15,7 @@ Prowl is an email harvesting tool that scrapes Yahoo for Linkedin profiles assoc
 ## Requirements
 * BeautifulSoup
 * GitPython
+* CssSelect
 
 ## Example usage
 ### Basic search
