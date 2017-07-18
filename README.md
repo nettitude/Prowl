@@ -5,6 +5,7 @@ Prowl is an email harvesting tool that scrapes Yahoo for Linkedin profiles assoc
 
 ### Backstory
 [![Steelcon 2017 - Neil Lines - Samurai of the west](https://img.youtube.com/vi/3kHP5D7VZ_I/hqdefault.jpg)](https://youtu.be/3kHP5D7VZ_I?t=6h47m5s)
+(CLICK TO WATCH)
 
 ## Install Instructions
 
