@@ -92,15 +92,17 @@ def get_all_left_links_details(soup,
 				get_elem_value(
 				div_elem,'p.lh-16','text'
 				) )
-
+			if "View" in left_link_dict['Text']:
+				left_link_dict['Text'] = ''
 			if left_link_dict['Name'] and left_link_dict not in all_left_links:
 				all_left_links.append(left_link_dict)
+
 
 			if all_left_links and get_top_link_only:
 				break
 
 	except Exception as e:
-		lprint('error in  get_all_left_links_details : {}'.format(
+		print('error in  get_all_left_links_details : {}'.format(
 			str(e))
 		)
 
@@ -139,7 +141,7 @@ def mangle_emails(name,company,cur_company,title,emailformat,lihref):
 			req = requests.get("https://haveibeenpwned.com/api/breachedaccount/"+email2+"?truncateResponse=true", headers=headers)
 			#print "request code > ",req.content
 			try:
-				print "{0:30} {1:40} {2}".format(full_name, email2, req.content)
+				print "{0:30} {1:40} {3:40} {2}".format(full_name, email2, req.content, title)
 				target.write(fn+","+ln+","+company.title()+","+cur_company+","+title+","+email2+","+lihref+"\r\n")
 			except Exception as e:
 				print "in writing to file after request: ",str(e)
@@ -157,11 +159,10 @@ def search(comp,emailformat):
 	print "\n"
 	print bcolors.UNDERLINE + bcolors.WARNING + "S" + bcolors.OKBLUE + "T" + bcolors.OKGREEN + "A" + bcolors.ENDC + bcolors.UNDERLINE + "F" + bcolors.FAIL + "F" + bcolors.ENDC
 	print "\n"
-	for i in range(1,depth +1 ):
+	for i in range(5,depth):
 		i = str(i)
 		url = 'https://uk.search.yahoo.com/search;_ylt=A9mSs3IiEdVYsUMAY6ZLBQx.;_ylu=X3oDMTEzdm1nNDAwBGNvbG8DaXIyBHBvcwMxBHZ0aWQDBHNlYwNwYWdpbmF0aW9u?p="at+{0}"+site:linkedin.com/&pz=10&ei=UTF-8&fr=yfp-t-UK317&b={1}0&pz=10&xargs=0'.format(comp,i)
 		#print "search yahoo > [",url,"]"
-		print bcolors.OKBLUE + "Yahoo Search > Page :"  + bcolors.FAIL + i + bcolors.ENDC + "\n"
 		r = requests.get(url)
 		soup = BeautifulSoup(r.text, "lxml")
 
