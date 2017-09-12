@@ -111,7 +111,7 @@ def jobs(comp):
 	r = requests.get("https://www.indeed.co.uk/jobs?as_and='at+{0}'&as_phr=&as_any=&as_not=&as_ttl=&as_cmp=&jt=all&st=&salary=&radius=25&l=&fromage=any&limit=30&sort=&psf=advsrch".format(comp))
 	soup = BeautifulSoup(r.text, "lxml")
 	for tag in soup.findAll("h2", {"class" : "jobtitle"}):
-		print str(tag.getText()).strip()
+		print str(tag.getText().encode('utf-8')).strip()
 		pass
 if args.company:
 	if args.emailformat:
