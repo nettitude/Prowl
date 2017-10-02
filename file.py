@@ -71,9 +71,11 @@ def search(comp,emailformat):
 							fulljob = ""
 							mangle_emails(name, comp, emailformat, fulljob, linkpof)
 						else:
-							first = job.split(".",1)[1]
-							fulljob = first.split(" at ",1)[0]
+							#first = job.split(".",1)[1]
+							#fulljob = first.split(" at ",1)[0]
+							fulljob = job
 							mangle_emails(name, comp, emailformat, fulljob, linkpof)
+
 
 def mangle_emails(name, company, emailformat, fulljob, linkpof):
 	target = open("Output/"+company+".csv", 'a')
@@ -94,7 +96,7 @@ def mangle_emails(name, company, emailformat, fulljob, linkpof):
 			req = requests.get("https://haveibeenpwned.com/api/breachedaccount/"+email2+"?truncateResponse=true", headers=headers)
 			try:
 				breach = str(req.content)
-				print "{0:30} {1:40} {3:40} {2}".format(name, email2, req.content, fulljob)
+				print "{0:30} {1:40} {3:40} {2}".format(name, email2, req.content, fulljob[:50])
 				target.write(fn+","+ln+","+email2+","+fulljob+","+linkpof+","+breach+"\r\n")
 			except:
                         	pass
