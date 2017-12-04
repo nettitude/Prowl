@@ -9,7 +9,6 @@ import json
 import os
 import sys
 import dns.resolver
-import sys
 reload(sys)
 sys.setdefaultencoding('utf-8')
 
