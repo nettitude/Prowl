@@ -109,8 +109,8 @@ def bing(comp, emailformat):
                                                         if name not in names:
                                                                 names.append(name)
                                                                 linkedinurl = tag.find("cite").getText()
-								fulljob = tag.find("li").text
 			                             		try:
+									fulljob = tag.find("li").text
                                                                		mangle_emails(name, comp, emailformat, fulljob, linkedinurl)
 								except:
 									fuljob = ""
