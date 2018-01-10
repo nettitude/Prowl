@@ -82,9 +82,10 @@ def formatout(companyname,emailformat):
 		os.makedirs("Output")
 	if not os.path.exists("Output/"+companyname):
 		os.makedirs("Output/"+companyname+"/")
+		target = open("Output/"+companyname+"/accounts.csv", 'w')
+		target.write("First Name, Last Name, Email, Title, Profile, Breach"+"\r\n")
 	print "_"*50+"\n"
-	target = open("Output/"+companyname+"/accounts.csv", 'w')
-	target.write("First Name, Last Name, Email, Title, Profile, Breach"+"\r\n")
+	
 
 
 def bing(comp, emailformat):
@@ -212,6 +213,7 @@ if args.proxy:
 	proxy()
 
 if args.subdomains is True:
+	formatout(args.company, args.emailformat)
 	certscanner(args.emailformat)
 else:
 	pass
