@@ -47,7 +47,8 @@ def certscanner(emailformat):
 	dnsresolver.nameservers = ['8.8.8.8']
 	domain = emailformat.split("@")[1]
 	company = domain.split('.', 1)[0]
-	target = open("Output/"+company+"/domains.csv", 'w')
+	os.makedirs("Output/"+company+"/")
+	target = open("Output/"+company+"/domains.csv", 'w+')
 	target.write("Domain, IP"+"\r\n")
 	print bcolors.OKGREEN + "\nSUBDOMAINS"
 	print "-"*40
