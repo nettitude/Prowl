@@ -47,7 +47,6 @@ def certscanner(emailformat):
 	dnsresolver.nameservers = ['8.8.8.8']
 	domain = emailformat.split("@")[1]
 	company = domain.split('.', 1)[0]
-	os.makedirs("Output/"+company+"/")
 	target = open("Output/"+company+"/domains.csv", 'w+')
 	target.write("Domain, IP"+"\r\n")
 	print bcolors.OKGREEN + "\nSUBDOMAINS"
@@ -214,8 +213,9 @@ if args.proxy:
 	proxy()
 
 if args.subdomains is True:
-	formatout(args.company, args.emailformat)
-	certscanner(args.emailformat)
+	if args.emailformat:
+		formatout(args.company, args.emailformat)
+		certscanner(args.emailformat)
 else:
 	pass
 
