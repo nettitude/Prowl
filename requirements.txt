@@ -1,3 +1,4 @@
 BeautifulSoup
 gitpython
 dnspython
+lxml
