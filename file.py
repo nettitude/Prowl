@@ -114,7 +114,7 @@ def bing(comp, emailformat):
 									fulljob = tag.find("li").text
                                                                		mangle_emails(name, comp, emailformat, fulljob, linkedinurl)
 								except:
-									fuljob = ""
+									fulljob = ""
 									mangle_emails(name, comp, emailformat, fulljob, linkedinurl)
 
 def search(comp,emailformat):
