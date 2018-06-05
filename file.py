@@ -47,7 +47,8 @@ def certscanner(emailformat):
 	dnsresolver.nameservers = ['8.8.8.8']
 	domain = emailformat.split("@")[1]
 	company = domain.split('.', 1)[0]
-	target = open("Output/"+company+"/domains.csv", 'w+')
+	companyname = company.replace(" ", "")
+	target = open("Output/"+companyname+"/domains.csv", 'w+')
 	target.write("Domain, IP"+"\r\n")
 	print bcolors.OKGREEN + "\nSUBDOMAINS"
 	print "-"*40
@@ -76,8 +77,9 @@ def certscanner(emailformat):
 
 def formatout(companyname,emailformat):
 	domain = emailformat.split("@")[1]
+	companyname = companyname.replace(" ", "")
 	if emailformat:
-		print "Output file name: "+companyname+".csv"
+		print "Output folder: "+companyname
 	if not os.path.exists("Output"):
 		os.makedirs("Output")
 	if not os.path.exists("Output/"+companyname):
@@ -85,7 +87,7 @@ def formatout(companyname,emailformat):
 		target = open("Output/"+companyname+"/accounts.csv", 'w')
 		target.write("First Name, Last Name, Email, Title, Profile, Breach"+"\r\n")
 	print "_"*50+"\n"
-	
+
 
 
 def bing(comp, emailformat):
@@ -158,7 +160,8 @@ def search(comp,emailformat):
 
 def mangle_emails(name, company, emailformat, fulljob, linkpof):
 	name = name.replace(",", "")
-	target = open("Output/"+company+"/accounts.csv", 'a')
+	companyname = company.replace(" ", "")
+	target = open("Output/"+companyname+"/accounts.csv", 'a')
         fn = string.split(name)[0]
         fi = fn[0]
         ln = string.split(name)[1]
@@ -196,7 +199,8 @@ def mangle_emails(name, company, emailformat, fulljob, linkpof):
 		pass
 
 def jobs(comp):
-	target = open("Output/"+comp+"/jobs.csv", 'w')
+	companyname = comp.replace(" ", "")
+	target = open("Output/"+companyname+"/jobs.csv", 'w')
         target.write("Job Title"+"\r\n")
 	print "\n"
 	print bcolors.OKGREEN + "AVAILABLE JOBS"
