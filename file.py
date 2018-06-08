@@ -198,8 +198,9 @@ def mangle_emails(name, company, emailformat, fulljob, linkpof):
 	else:
 		pass
 
-def jobs(comp):
-	companyname = comp.replace(" ", "")
+def jobs(comp, emailformat):
+	domain = emailformat.split("@")[1]
+        companyname = domain.split(".")[0]
 	target = open("Output/"+companyname+"/jobs.csv", 'w')
         target.write("Job Title"+"\r\n")
 	print "\n"
@@ -231,13 +232,13 @@ if args.company:
 		formatout(args.company, args.emailformat)
 
 if args.jobs is True:
-	jobs(args.company)
+	jobs(args.company, args.emailformat)
 else:
 	pass
 
 if args.all is True:
 	certscanner(args.emailformat)
-	jobs(args.company)
+	jobs(args.company, args.emailformat)
 else:
 	pass
 
